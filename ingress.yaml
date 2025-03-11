@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: metabase-ingress
+  namespace: metabase
+  annotations:
+    kubernetes.io/ingress.class: contour # My ingress controller
+    cert-manager.io/cluster-issuer: letsencrypt-prod  # Request a certificate
+spec:
+  tls:
+  - hosts:
+    - metabase.example.com
+    secretName: metabase-tls  # Secret to store the certificate
+  rules:
+  - host: metabase.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: metabase
+            port:
+              number: 80

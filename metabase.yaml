@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metabase
+  namespace: metabase
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metabase
+  template:
+    metadata:
+      labels:
+        app: metabase
+    spec:
+      containers:
+        - name: metabase
+          image: metabase/metabase:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MB_DB_TYPE
+              value: "postgres"
+            - name: MB_DB_DBNAME
+              value: "metabase"
+            - name: MB_DB_PORT
+              value: "5432"
+            - name: MB_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mb-secret
+                  key: MB_DB_USER
+            - name: MB_DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mb-secret
+                  key: MB_DB_PASS
+            - name: MB_DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: mb-secret
+                  key: MB_DB_HOST
+          resources:
+            requests:
+              cpu: "500m"  # 0.5 CPU core
+              memory: "512Mi"  # 512 MiB of memory
+            limits:
+              cpu: "1000m"  # 1 CPU core
+              memory: "1024Mi"  # 1 GiB of memory
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: metabase
+  namespace: metabase
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 3000
+  selector:
+    app: metabase
