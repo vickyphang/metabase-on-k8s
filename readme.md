@@ -116,9 +116,11 @@ Replace `metabase.example.com` with your domain name.
 
 Once the Ingress is deployed, access Metabase via the configured domain (e.g., `https://metabase.example.com`).
 
+<p align="center"> <img src="./metabase-dashboard.png"> </p>
 
 ## References
 
 1. [Metabase Documentation](https://www.metabase.com/docs/latest/)
 2. [Deploying Metabase on Kubernetes](https://medium.com/@10anupriya/deploying-metabase-on-kubernetes-02d65d07837d)
 3. [How to deploy Metabase on Kubernetes](https://medium.com/@mathieuces/how-to-deploy-metabase-on-kubernetes-4aa77b9eac2d)
+4. [HR Analytics Project](https://github.com/decodinggithub/HR_Analytics)
